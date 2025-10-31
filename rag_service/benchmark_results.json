@@ -1,0 +1,23 @@
+{
+  "benchmark_name": "Human Rights Legal RAG Benchmark",
+  "total_questions": 30,
+  "hybrid_accuracy": 0.8,
+  "vector_accuracy": 0.7333333333333333,
+  "improvement_percent": 6.666666666666677,
+  "hybrid_hits": 24,
+  "vector_hits": 22,
+  "by_difficulty": {
+    "easy": {
+      "hybrid": 1.0,
+      "vector": 0.7142857142857143
+    },
+    "medium": {
+      "hybrid": 0.6923076923076923,
+      "vector": 0.7692307692307693
+    },
+    "hard": {
+      "hybrid": 0.8,
+      "vector": 0.7
+    }
+  }
+}

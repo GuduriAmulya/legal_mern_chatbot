@@ -1,0 +1,277 @@
+{
+  "benchmark_name": "Human Rights Legal RAG Benchmark",
+  "description": "30 questions on human rights law (constitutional rights)",
+  "created_date": "2024-01-15",
+  "questions": [
+  {
+    "id": 1,
+    "query": "What is Article 21 of the Indian Constitution?",
+    "gold_answer": "Right to life and personal liberty",
+    "gold_keywords": ["life", "personal liberty", "Article 21"],
+    "difficulty": "easy",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 2,
+    "query": "Which Article provides the right to education?",
+    "gold_answer": "Article 21A provides the right to education.",
+    "gold_keywords": ["Article 21A", "education"],
+    "difficulty": "easy",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 3,
+    "query": "What does Article 14 guarantee?",
+    "gold_answer": "Equality before law and equal protection of laws.",
+    "gold_keywords": ["equality", "law", "Article 14"],
+    "difficulty": "easy",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 4,
+    "query": "Which Article abolishes untouchability?",
+    "gold_answer": "Article 17 abolishes untouchability.",
+    "gold_keywords": ["Article 17", "untouchability"],
+    "difficulty": "easy",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 5,
+    "query": "What is protected under Article 19(1)(a)?",
+    "gold_answer": "Freedom of speech and expression.",
+    "gold_keywords": ["Article 19", "speech", "expression"],
+    "difficulty": "easy",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 6,
+    "query": "Under which Article can the Supreme Court issue writs for enforcement of fundamental rights?",
+    "gold_answer": "Article 32 empowers the Supreme Court to issue writs for enforcement of fundamental rights.",
+    "gold_keywords": ["Article 32", "Supreme Court", "writs", "fundamental rights"],
+    "difficulty": "medium",
+    "category": "conceptual",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 7,
+    "query": "Which Article deals with equality of opportunity in public employment?",
+    "gold_answer": "Article 16 provides equality of opportunity in matters of public employment.",
+    "gold_keywords": ["Article 16", "equality", "public employment"],
+    "difficulty": "easy",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 8,
+    "query": "What does Article 25 ensure?",
+    "gold_answer": "Freedom of conscience and the right to freely profess, practice, and propagate religion.",
+    "gold_keywords": ["Article 25", "freedom of religion", "conscience"],
+    "difficulty": "medium",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 9,
+    "query": "Which Article empowers Parliament to amend the Constitution?",
+    "gold_answer": "Article 368 gives Parliament the power to amend the Constitution and lay down the procedure for amendment.",
+    "gold_keywords": ["Article 368", "amend", "Parliament"],
+    "difficulty": "medium",
+    "category": "procedural",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 10,
+    "query": "What is the significance of Article 370?",
+    "gold_answer": "Article 370 provided special status to the State of Jammu and Kashmir.",
+    "gold_keywords": ["Article 370", "Jammu and Kashmir", "special status"],
+    "difficulty": "medium",
+    "category": "historical",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 11,
+    "query": "What does the Preamble of the Indian Constitution declare India to be?",
+    "gold_answer": "A Sovereign Socialist Secular Democratic Republic.",
+    "gold_keywords": ["Preamble", "Sovereign", "Socialist", "Secular", "Democratic", "Republic"],
+    "difficulty": "easy",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 12,
+    "query": "Which Article prohibits employment of children in factories?",
+    "gold_answer": "Article 24 prohibits the employment of children below the age of 14 years in factories and hazardous employment.",
+    "gold_keywords": ["Article 24", "children", "employment", "factories"],
+    "difficulty": "medium",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 13,
+    "query": "What is the purpose of Directive Principles of State Policy?",
+    "gold_answer": "They aim to create social and economic conditions under which citizens can lead a good life.",
+    "gold_keywords": ["Directive Principles", "State Policy", "social", "economic"],
+    "difficulty": "medium",
+    "category": "conceptual",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 14,
+    "query": "Which Article guarantees the right to constitutional remedies?",
+    "gold_answer": "Article 32 guarantees the right to move the Supreme Court for enforcement of fundamental rights.",
+    "gold_keywords": ["Article 32", "constitutional remedies", "Supreme Court"],
+    "difficulty": "medium",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 15,
+    "query": "What is Article 280 related to?",
+    "gold_answer": "Article 280 provides for the establishment of a Finance Commission.",
+    "gold_keywords": ["Article 280", "Finance Commission"],
+    "difficulty": "medium",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 16,
+    "query": "Which Article deals with the Comptroller and Auditor-General of India?",
+    "gold_answer": "Article 148 deals with the Comptroller and Auditor-General of India.",
+    "gold_keywords": ["Article 148", "CAG", "audit"],
+    "difficulty": "medium",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 17,
+    "query": "Under which Article can the President proclaim a national emergency?",
+    "gold_answer": "Article 352 empowers the President to proclaim a national emergency.",
+    "gold_keywords": ["Article 352", "national emergency", "President"],
+    "difficulty": "medium",
+    "category": "procedural",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 18,
+    "query": "What is Article 368(2) about?",
+    "gold_answer": "It lays down the procedure for amendment of the Constitution.",
+    "gold_keywords": ["Article 368", "procedure", "amendment"],
+    "difficulty": "medium",
+    "category": "procedural",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 19,
+    "query": "Which part of the Constitution deals with Fundamental Duties?",
+    "gold_answer": "Part IVA deals with Fundamental Duties under Article 51A.",
+    "gold_keywords": ["Part IVA", "Article 51A", "Fundamental Duties"],
+    "difficulty": "medium",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 20,
+    "query": "What is Article 300A about?",
+    "gold_answer": "No person shall be deprived of property save by authority of law.",
+    "gold_keywords": ["Article 300A", "right to property", "law"],
+    "difficulty": "medium",
+    "category": "factual_recall",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 21,
+    "query": "Which Articles together form the basis of the Right to Equality in the Indian Constitution?",
+    "gold_answer": "Articles 14 to 18 collectively form the Right to Equality.",
+    "gold_keywords": ["Articles 14", "15", "16", "17", "18", "Right to Equality"],
+    "difficulty": "hard",
+    "category": "multi_article_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 22,
+    "query": "Which Article empowers the Supreme Court to enforce Fundamental Rights, and which Article gives similar power to High Courts?",
+    "gold_answer": "Article 32 empowers the Supreme Court, and Article 226 empowers the High Courts to issue writs for enforcement of Fundamental Rights.",
+    "gold_keywords": ["Article 32", "Article 226", "Supreme Court", "High Court", "writs"],
+    "difficulty": "hard",
+    "category": "comparative_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 23,
+    "query": "Which Fundamental Right was removed from the Constitution and later made a legal right?",
+    "gold_answer": "The Right to Property was removed from the list of Fundamental Rights by the 44th Amendment and made a legal right under Article 300A.",
+    "gold_keywords": ["Right to Property", "Article 300A", "44th Amendment", "Fundamental Rights"],
+    "difficulty": "hard",
+    "category": "historical_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 24,
+    "query": "Which Article provides for suspension of the right to move the courts for enforcement of Fundamental Rights during an Emergency?",
+    "gold_answer": "Article 359 provides for suspension of the right to move any court for enforcement of Fundamental Rights during a National Emergency.",
+    "gold_keywords": ["Article 359", "Emergency", "suspension", "Fundamental Rights"],
+    "difficulty": "hard",
+    "category": "procedural_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 25,
+    "query": "How does Article 13 relate to Article 368 in the context of constitutional amendments?",
+    "gold_answer": "Article 13 declares laws inconsistent with Fundamental Rights void, while Article 368 provides Parliament the power to amend the Constitution. Their relationship was clarified in the Kesavananda Bharati case, holding that amendments cannot destroy the basic structure.",
+    "gold_keywords": ["Article 13", "Article 368", "Fundamental Rights", "basic structure"],
+    "difficulty": "hard",
+    "category": "conceptual_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 26,
+    "query": "What is the difference between the powers of the President under Article 72 and those of the Governor under Article 161?",
+    "gold_answer": "Article 72 empowers the President to grant pardons, reprieves, respites, or remissions for offences against Union law, while Article 161 gives similar powers to the Governor for offences against State laws.",
+    "gold_keywords": ["Article 72", "Article 161", "pardon", "Governor", "President"],
+    "difficulty": "hard",
+    "category": "comparative_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 27,
+    "query": "Which Articles define the separation of powers between the Legislature, Executive, and Judiciary in India?",
+    "gold_answer": "Although not explicitly stated, Articles 50, 53, and 122–123 (for the Union), and Articles 162, 212–213 (for the States) establish the doctrine of separation of powers.",
+    "gold_keywords": ["separation of powers", "Articles 50", "53", "122", "123", "162", "212", "213"],
+    "difficulty": "hard",
+    "category": "multi_article_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 28,
+    "query": "Which constitutional provisions together ensure the independence of the judiciary?",
+    "gold_answer": "Articles 124–147 (Supreme Court) and Articles 214–231 (High Courts) ensure judicial independence through provisions on appointment, tenure, and removal of judges.",
+    "gold_keywords": ["Article 124", "Article 147", "Article 214", "Article 231", "judiciary", "independence"],
+    "difficulty": "hard",
+    "category": "multi_article_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 29,
+    "query": "Under what conditions can Parliament legislate on matters in the State List?",
+    "gold_answer": "Parliament can legislate on State List matters under Articles 249 (national interest), 250 (emergency), and 252 (states’ consent).",
+    "gold_keywords": ["Article 249", "Article 250", "Article 252", "State List", "Parliament"],
+    "difficulty": "hard",
+    "category": "procedural_reasoning",
+    "expected_source": "constitution"
+  },
+  {
+    "id": 30,
+    "query": "Which Articles together form the basis of India's federal structure?",
+    "gold_answer": "Articles 245 to 263, under Part XI, define legislative and administrative relations between the Union and States, forming the federal structure.",
+    "gold_keywords": ["Articles 245", "263", "Union and States", "federal", "Part XI"],
+    "difficulty": "hard",
+    "category": "conceptual_reasoning",
+    "expected_source": "constitution"
+  }
+]
+}
