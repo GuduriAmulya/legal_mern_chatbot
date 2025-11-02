@@ -53,8 +53,15 @@ export default function ChatWindow({ chat, token, refreshChats }) {
 
   const clearHistory = async () => {
     if (!window.confirm('Clear all messages in this chat?')) return;
-    await post(`/chats/${chat._id}/reset`, {}, token);
-    setMessages([]);
+    
+    try {
+      // Call backend reset endpoint (which forwards to rag_service)
+      await post(`/chats/${chat._id}/reset`, {}, token);
+      setMessages([]);
+    } catch (error) {
+      console.error('Failed to clear history:', error);
+      alert('Failed to clear chat history. Please try again.');
+    }
   };
 
   return (

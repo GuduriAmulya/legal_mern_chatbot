@@ -179,3 +179,40 @@ exports.deleteChat = async (req, res) => {
 		return res.status(500).json({ message: 'Server error' });
 	}
 };
+
+// Reset/clear chat messages
+exports.resetChat = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const conv = await Conversation.findById(id);
+    if (!conv || conv.userId.toString() !== req.user._id.toString()) {
+      return res.status(404).json({ message: 'Not found' });
+    }
+
+    // Call rag_service reset if ragSessionId exists
+    if (conv.ragSessionId) {
+      try {
+        const ragResp = await fetch(`${RAG_SERVICE_URL}/sessions/${conv.ragSessionId}/reset`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!ragResp.ok) {
+          console.warn('RAG service reset failed:', ragResp.status);
+        }
+      } catch (err) {
+        console.warn('Failed to reset rag session:', err.message);
+      }
+    }
+
+    // Clear messages in MongoDB
+    conv.messages = [];
+    await conv.save();
+
+    return res.json({ message: 'Chat cleared', conversation: conv });
+  } catch (err) {
+    console.error('Reset chat error:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
