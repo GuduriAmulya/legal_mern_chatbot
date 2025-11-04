@@ -10,10 +10,12 @@ export default function ChatList({ chats, setActive, onDelete }) {
   }
   return (
     <div>
-      {chats.map(c => (
+      {chats.map((c, index) => (
         <div key={c._id} className="chat-item" onClick={() => setActive(c)}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <strong>{c.title}</strong>
+            <strong>
+              {c.title === 'New Chat' ? `Chat ${chats.length - index}` : c.title}
+            </strong>
             <div style={{ display: 'flex', gap: 8 }}>
               <button
                 className="small"

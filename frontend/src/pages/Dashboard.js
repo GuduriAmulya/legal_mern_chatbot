@@ -43,20 +43,19 @@ export default function Dashboard({ token, setToken }) {
     loadChats();
   }, [token]); // reload when token changes
 
-  async function createChat() {
+  const createChat = async () => {
+    if (loading) return;
+    setLoading(true);
     try {
-      const res = await post('/chats', { title: 'New Chat' }, token);
-      if (res && res._id) {
-        setChats(prev => [res, ...prev]);
-        setActive(res);
-      } else {
-        alert('Failed to create chat');
-      }
+      const chatNumber = chats.length + 1;  // ← Count existing chats
+      const chat = await post('/chats', { title: `Chat ${chatNumber}` }, token);
+      setChats([chat, ...chats]);
+      setActiveChat(chat);
     } catch (err) {
       console.error('Create chat error', err);
       alert(err.message || 'Failed to create chat');
     }
-  }
+  };
 
   // New delete handler
   async function deleteChat(chatId) {

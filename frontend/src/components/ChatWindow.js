@@ -66,8 +66,8 @@ export default function ChatWindow({ chat, token, refreshChats }) {
 
   return (
     <div className="chat-window">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3>{chat.title}</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h3 style={{ margin: 0 }}>{chat.title}</h3>
         <button className="small" onClick={clearHistory}>🗑️ Clear</button>
       </div>
       
