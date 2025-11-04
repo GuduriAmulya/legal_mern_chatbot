@@ -115,9 +115,23 @@ class RAGPipeline:
         return False
 
     def generate_response(self, query: str, context: str, conversation_context: str = "") -> str:
-        system_prompt = """You are a helpful legal assistant specializing in human rights law.
-Use the provided context to answer questions accurately and cite relevant information when possible.
-If the context doesn't contain relevant information, say so clearly."""
+        # ✅ IMPROVED: More specific system prompt
+        system_prompt = """You are a legal assistant specializing in Indian constitutional law and human rights.
+
+Your knowledge domains:
+- Indian Constitution (Articles, Amendments, Schedules)
+- Fundamental Rights (Articles 12-35)
+- Directive Principles of State Policy
+- Universal Declaration of Human Rights (UDHR)
+- Constitutional governance structures (Panchayati Raj, etc.)
+
+Guidelines:
+1. Always cite specific Articles/Sections when applicable
+2. Distinguish between constitutional rights vs. human rights treaties
+3. If context lacks relevant information, say: "Based on the available documents, I don't have specific information on this topic."
+4. Use clear, accessible language while maintaining legal accuracy
+"""
+        
         user_prompt = f"Conversation:\n{conversation_context}\n\nContext:\n{context}\n\nQuestion: {query}"
         try:
             resp = self.groq_client.chat.completions.create(
@@ -135,33 +149,89 @@ If the context doesn't contain relevant information, say so clearly."""
             return f"Error generating response: {e}"
 
     def rewrite_query_with_context(self, query: str, conversation_context: str) -> str:
-        """Rewrite ambiguous follow-up queries using conversation context."""
-        if not conversation_context or len(query.split()) > 15:
+        """Intelligently rewrite ONLY true follow-up queries."""
+        # ✅ RULE 1: Skip if no conversation history
+        if not conversation_context:
             return query
-
-        follow_up_keywords = ["that", "this", "those", "it", "them", "examples", "more", "explain", "elaborate", "tell me"]
-        if not any(kw in query.lower() for kw in follow_up_keywords):
+        
+        # ✅ RULE 2: Skip if query is already detailed (>15 words)
+        if len(query.split()) > 15:
             return query
+        
+        # ✅ RULE 3: Skip if query starts with informational keywords (new topic)
+        informational_starters = [
+            'explain', 'what is', 'what are', 'what was', 'what does',
+            'who', 'when', 'where', 'why', 'how', 'which',
+            'define', 'describe', 'list', 'tell me about'
+        ]
+        if any(query.lower().strip().startswith(starter) for starter in informational_starters):
+            print(f"DEBUG: Skipping rewrite - query starts with informational keyword")
+            return query
+        
+        # ✅ RULE 4: Skip if query contains specific legal terms (likely standalone)
+        specific_legal_terms = [
+            'article', 'section', 'act', 'ipc', 'crpc', 'constitution',
+            'amendment', 'schedule', 'panchayat', 'fundamental rights',
+            'directive principles', 'udhr', 'iccpr'
+        ]
+        if any(term in query.lower() for term in specific_legal_terms):
+            print(f"DEBUG: Skipping rewrite - query contains specific legal term")
+            return query
+        
+        # ✅ RULE 5: Only rewrite if query has STRONG follow-up indicators
+        strong_follow_up_patterns = [
+            r'\bthat\b',           # "explain that"
+            r'\bthis\b',           # "what about this"
+            r'\bthose\b',          # "give those examples"
+            r'\bit\b',             # "elaborate on it"
+            r'\bthem\b',           # "list them"
+            r'^(more|another)',    # starts with "more" or "another"
+            r'^(give|show|provide)\s+(me\s+)?(examples?|details?)',  # "give examples"
+        ]
+        
+        has_follow_up = any(re.search(pattern, query.lower()) for pattern in strong_follow_up_patterns)
+        
+        if not has_follow_up:
+            print(f"DEBUG: Skipping rewrite - no strong follow-up indicators")
+            return query
+        
+        # ✅ ONLY NOW do we attempt rewriting (high confidence it's a follow-up)
+        print(f"DEBUG: Detected follow-up query, attempting rewrite...")
+        
+        rewrite_prompt = f"""You are rewriting a follow-up legal question to be self-contained.
 
-        rewrite_prompt = f"""Previous conversation:
+Previous conversation (last 2 turns):
 {conversation_context[-800:]}
 
-User's follow-up question: {query}
+User's follow-up: {query}
 
-Rewrite the user's question to be self-contained by incorporating relevant context. Keep it concise.
+Rules:
+1. If the query references "that", "this", "it", replace with the actual topic from conversation
+2. Preserve exact legal terminology (Article numbers, act names, constitutional terms)
+3. Keep it concise (max 20 words)
+4. If already clear, return unchanged
+
 Rewritten question:"""
 
         try:
             resp = self.groq_client.chat.completions.create(
                 model="llama-3.1-8b-instant",
                 messages=[{"role": "user", "content": rewrite_prompt}],
-                temperature=0.1,
-                max_tokens=60
+                temperature=0.05,  # ✅ Lower temp for more consistent rewrites
+                max_tokens=50
             )
             rewritten = resp.choices[0].message.content.strip()
+            
+            # ✅ Safety check: if rewritten is too different (>2x length), use original
+            if len(rewritten.split()) > len(query.split()) * 2:
+                print(f"DEBUG: Rewrite too verbose, using original")
+                return query
+            
             print(f"DEBUG: Query rewritten from '{query}' to '{rewritten}'")
             return rewritten
-        except Exception:
+            
+        except Exception as e:
+            print(f"DEBUG: Rewrite failed ({e}), using original")
             return query
 
     def chat(self, session_id: str, query: str, include_history: bool = True, evaluate: bool = False) -> Dict:
@@ -346,8 +416,4 @@ Rewritten question:"""
                 print(f"Evaluation failed: {e}")
                 evaluation = None
 
-        return {
-            "response": response_text,
-            "debug": debug,
-            "evaluation": evaluation
-        }
+        return {"response": response_text, "debug": debug, "evaluation": evaluation}

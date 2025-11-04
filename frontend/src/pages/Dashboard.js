@@ -5,35 +5,35 @@ import ChatWindow from '../components/ChatWindow';
 
 export default function Dashboard({ token, setToken }) {
   const [chats, setChats] = useState([]);
-  const [active, setActive] = useState(null);
+  const [activeChat, setActiveChat] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [panelOpen, setPanelOpen] = useState(true);
+
+  // Load user from localStorage on mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error('Failed to parse user:', e);
+      }
+    }
+  }, []);
 
   // Load chats from server
   async function loadChats() {
     setLoading(true);
     try {
       const data = await get('/chats', token);
-      if (Array.isArray(data)) {
-        setChats(data);
-        // Set active only if none selected
-        setActive(prev => {
-          if (prev && data.find(c => c._id === prev._id)) {
-            return prev; // keep existing active if still present
-          }
-          return data.length ? data[0] : null;
-        });
-      } else {
-        console.warn('Unexpected chats response', data);
-        setChats([]);
-        setActive(null);
+      setChats(data);
+      // Auto-select first chat if none selected
+      if (data.length > 0 && !activeChat) {
+        setActiveChat(data[0]);
       }
     } catch (err) {
-      console.error('Error loading chats:', err);
-      // api helper may have already cleared token on 401 and reloaded
-      alert(err.message || 'Failed to load chats');
-      setChats([]);
-      setActive(null);
+      console.error('Load chats error', err);
     } finally {
       setLoading(false);
     }
@@ -54,57 +54,58 @@ export default function Dashboard({ token, setToken }) {
     } catch (err) {
       console.error('Create chat error', err);
       alert(err.message || 'Failed to create chat');
+    } finally {
+      setLoading(false);
     }
   };
 
-  // New delete handler
-  async function deleteChat(chatId) {
+  const deleteChat = async (id) => {
     if (!window.confirm('Delete this chat? This action cannot be undone.')) return;
     try {
-      await del(`/chats/${chatId}`, token);
-      // remove from state
-      setChats(prev => prev.filter(c => c._id !== chatId));
-      setActive(prev => {
-        if (prev && prev._id === chatId) {
-          // choose first remaining or null
-          const remaining = chats.filter(c => c._id !== chatId);
-          return remaining.length ? remaining[0] : null;
-        }
-        return prev;
-      });
+      await del(`/chats/${id}`, token);
+      const newChats = chats.filter(c => c._id !== id);
+      setChats(newChats);
+      
+      // If deleted chat was active, switch to another
+      if (activeChat && activeChat._id === id) {
+        setActiveChat(newChats.length > 0 ? newChats[0] : null);
+      }
     } catch (err) {
       console.error('Delete chat error', err);
       alert(err.message || 'Failed to delete chat');
     }
-  }
+  };
 
   return (
-    <div className="dashboard layout">
-      <div className={`sidebar-panel ${panelOpen ? 'open' : 'closed'}`}>
-        <div className="sidebar-header">
-          <h2>Chats</h2>
-          <div className="sidebar-controls">
-            <button className="small" onClick={createChat}>+ New</button>
-            <button className="small" onClick={() => setPanelOpen(false)}>Hide</button>
-          </div>
+    <div className="dashboard">
+      {/* {user && (
+        <div className="dashboard-header">
+          <h3>Welcome back, {user.name || user.email}!</h3>
         </div>
-        <div className="sidebar-body">
-          {loading ? <div>Loading...</div> : <ChatList chats={chats} setActive={setActive} onDelete={deleteChat} />}
+      )} */}
+      
+      <div className="dashboard-content">
+        <div className="sidebar">
+          <button className="new-chat-btn" onClick={createChat} disabled={loading}>
+            + New Chat
+          </button>
+          {loading ? (
+            <div style={{ padding: 16, color: '#64748b' }}>Loading...</div>
+          ) : (
+            <ChatList chats={chats} setActive={setActiveChat} onDelete={deleteChat} />
+          )}
+        </div>
+
+        <div className="main">
+          {activeChat ? (
+            <ChatWindow chat={activeChat} token={token} refreshChats={loadChats} />
+          ) : (
+            <div className="no-chat">
+              {loading ? 'Loading...' : 'Select a chat or create a new one'}
+            </div>
+          )}
         </div>
       </div>
-
-      <main className="main-panel">
-        <div className="main-header">
-          <button className="small" onClick={() => setPanelOpen(!panelOpen)}>
-            {panelOpen ? 'Hide Chats' : 'Show Chats'}
-          </button>
-          <div className="spacer" />
-        </div>
-
-        <div className="main-content">
-          {active ? <ChatWindow chat={active} token={token} refreshChats={loadChats} /> : <div className="empty">Select or create a chat</div>}
-        </div>
-      </main>
     </div>
   );
 }

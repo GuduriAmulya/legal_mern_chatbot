@@ -193,43 +193,44 @@ body {
 .composer {
   display: flex;
   gap: 12px;
-  align-items: center;
-  padding: 12px;
-  border-top: 1px solid rgba(15,23,36,0.04);
-  background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.95));
-  border-radius: 0 0 8px 8px;
-  max-width: 900px;
-  margin: 12px auto 0;
+  padding: 16px 20px;  /* ← Added horizontal padding */
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
+  width: 100%;  /* ← Full width */
+  box-sizing: border-box;
 }
 
 /* Input takes majority of horizontal space */
 .composer-input {
-  flex: 1 1 70%;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(30,111,184,0.12);
-  background: #ffffff;
+  flex: 1;  /* ← Takes all available space */
+  padding: 14px 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 15px;
-  outline: none;
-  transition: box-shadow .15s ease, border-color .15s ease;
+  min-height: 48px;
+  line-height: 1.5;
+  width: 100%;  /* ← Full width */
 }
 
 /* Input focus style */
 .composer-input:focus {
-  box-shadow: 0 6px 18px rgba(30,111,184,0.08);
-  border-color: var(--accent);
+  outline: none;
+  border-color: #1e40af;
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
 /* Send button - prominent */
 .composer-btn {
   flex: 0 0 120px;
-  background: var(--accent);
-  color: #fff;
+  padding: 14px 28px;  /* ← Increased padding to match input height */
+  background: #1e40af;
+  color: white;
   border: none;
-  padding: 12px 16px;
-  border-radius: 10px;
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 15px;  /* ← Match input font size */
   cursor: pointer;
+  min-height: 48px;  /* ← Match input height */
   box-shadow: 0 8px 20px rgba(30,111,184,0.12);
   transition: transform .08s ease, box-shadow .12s ease;
 }
@@ -239,12 +240,99 @@ body {
   box-shadow: 0 10px 26px rgba(30,111,184,0.16);
 }
 
-/* Smaller screens: stack composer neatly */
-@media (max-width: 640px) {
-  .composer {
-    gap: 8px;
-    padding: 10px;
-  }
-  .composer-input { font-size: 14px; }
-  .composer-btn { flex: 0 0 90px; padding: 10px; }
+/* Dashboard */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;  /* ← Prevent page scrolling */
+}
+
+.dashboard-header {
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.dashboard-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.dashboard-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;  /* ← Important: prevent content overflow */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  background: #f8fafc;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.new-chat-btn {
+  margin: 16px;
+  padding: 12px;
+  background: #1e40af;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  transition: background 0.2s;
+}
+.new-chat-btn:hover {
+  background: #1e3a8a;
+}
+
+.new-chat-btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+/* Main content area */
+/* Main content area */
+.main { 
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  background: white; /* ← Prevent overflow */
+  overflow: hidden;  /* ← Prevent overflow */
+}
+/* Chat Window */
+/* Chat Window */
+.chat-window {
+  display: flex;
+  flex-direction: column; /* ← Fill entire parent */
+  height: 100%;  /* ← Fill entire parent */
+  width: 100%;   /* ← Fill entire width */
+  padding: 20px 30px;  /* ← Increased horizontal padding for more space */
+  box-sizing: border-box;  /* ← Include padding in height calculation */
+}
+
+.messages { /* ← Take all available space */
+  flex: 1;  /* ← Take all available space */
+  overflow-y: auto;  /* ← Scrollable */
+  margin: 16px 0;
+  padding: 10px;
+  background: #f8fafc;
+  border-radius: 8px; /* ← Minimum height */
+  min-height: 200px;  /* ← Minimum height */
+}
+.composer {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;  /* ← Added border */
+  flex-shrink: 0;  /* ← Don't shrink, always visible */
+  flex-shrink: 0;  /* ← Don't shrink, always visible */
 }
