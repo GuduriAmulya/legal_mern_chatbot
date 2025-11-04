@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { post } from '../services/api';
+import { Link } from 'react-router-dom';
 
 export default function Login({ setToken }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const res = await post('/auth/login', { email, password });
+      
       if (res.token) {
         setToken(res.token);
-        window.location.hash = '/';
+        localStorage.setItem('user', JSON.stringify(res.user));
+        navigate('/dashboard'); // ← Redirect to dashboard
       } else {
         alert(res.message || 'Login failed');
       }
@@ -53,14 +58,14 @@ export default function Login({ setToken }) {
             required
           />
 
-          <div className="auth-actions">
-            <button className="auth-submit" type="submit" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign In'}
-            </button>
-            <a className="auth-link" href="#/register">Create account</a>
-          </div>
-        </form>
+            <div className="auth-actions">
+              <button className="auth-submit" type="submit" disabled={loading}>
+                {loading ? 'Signing in...' : 'Sign In'}
+              </button>
+              <Link to="/register" className="auth-link">Create account</Link>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
   );
-}
+} 

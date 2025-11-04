@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 export default function LandingPage() {
   return (
     <div className="landing-root">
@@ -10,8 +10,9 @@ export default function LandingPage() {
             Multi-turn legal assistant grounded in your documents. Fast retrieval, context-aware responses, and evaluation tools for high-quality legal help.
           </p>
           <div className="hero-actions">
-            <a href="#/login" className="btn btn-primary">Login</a>
-            <a href="#/register" className="btn btn-secondary">Register</a>
+            {/* <Link to="/login" className="auth-link">Create account</Link> */}
+            <Link to="/login" className="btn btn-primary">Login</Link>
+            <Link to="/register" className="btn btn-secondary">Register</Link>
           </div>
         </div>
       </header>

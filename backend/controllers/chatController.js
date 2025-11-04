@@ -11,18 +11,22 @@ exports.listChats = async (req, res) => {
 
 // Create new chat (also create rag session) with graceful failure
 exports.createChat = async (req, res) => {
-	const { title } = req.body;
 	try {
-		// create conversation record first
-		const conv = new Conversation({ userId: req.user._id, title });
-		await conv.save();
+		// Count existing chats for this user to get next number
+		const chatCount = await Conversation.countDocuments({ userId: req.user._id });
+		
+		const conv = new Conversation({
+			userId: req.user._id,
+			title: req.body.title || `Chat ${chatCount + 1}`,  // ← Auto-number
+			messages: [],
+		});
 
 		// try to create session in rag_service (non-fatal)
 		try {
 			const resp = await fetch(`${RAG_SERVICE_URL}/sessions`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ user_id: req.user._id.toString(), title })
+				body: JSON.stringify({ user_id: req.user._id.toString(), title: conv.title })
 			});
 			const data = await resp.json();
 			if (resp.ok && data.session_id) {
